@@ -1,0 +1,12 @@
+{
+  "name": "vue-devtools",
+  "version": "5.0.9",
+  "description": "Расширение для удобной разработки на Vue.js",
+  "main": "index.js",
+  "repository": "https://github.com/danyadev/vue-devtools",
+  "author": {
+    "name": "danyadev",
+    "email": "danyadev@mail.ru"
+  },
+  "license": "MIT"
+}
