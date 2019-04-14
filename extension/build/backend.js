@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 125);
+/******/ 	return __webpack_require__(__webpack_require__.s = 129);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1553,10 +1553,10 @@ function connect (Vue) {
 
   // vuex
   if (backend_hook.store) {
-    Object(vuex["b" /* initVuexBackend */])(backend_hook, backend_bridge, isLegacy)
+    Object(vuex["b" /* initVuexBackend */])(backend_hook, backend_bridge, backend_hook.store.commit === undefined)
   } else {
     backend_hook.once('vuex:init', store => {
-      Object(vuex["b" /* initVuexBackend */])(backend_hook, backend_bridge, isLegacy)
+      Object(vuex["b" /* initVuexBackend */])(backend_hook, backend_bridge, store.commit === undefined)
     })
   }
 
@@ -2542,7 +2542,7 @@ function stringifyStrict (data, replacer, space) {
 
 /***/ }),
 
-/***/ 125:
+/***/ 129:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5220,8 +5220,8 @@ var internalSharedData = {
   recordPerf: false,
   editableProps: false,
   logDetected: true,
-  vuexAutoload: false,
-  vuex1: false
+  vuexNewBackend: false,
+  vuexAutoload: false
 }
 
 var persisted = [
@@ -5231,8 +5231,8 @@ var persisted = [
   'recordVuex',
   'editableProps',
   'logDetected',
-  'vuexAutoload',
-  'vuex1'
+  'vuexNewBackend',
+  'vuexAutoload'
 ]
 
 // ---- INTERNALS ---- //
@@ -5832,7 +5832,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(50);
+__webpack_require__(52);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -13910,7 +13910,7 @@ function browserIsBuffer (b) {
 
 /***/ }),
 
-/***/ 50:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -14213,6 +14213,8 @@ class VuexBackend {
     this.registeredModules = {}
     /** All dynamic modules ever registered, useful for mutation replaying */
     this.allTimeModules = {}
+    /** Legacy base state */
+    this.legacyBaseSnapshot = null
 
     // First-time snapshot VM creation
     this.resetSnapshotsVm()
@@ -14310,7 +14312,11 @@ class VuexBackend {
    * ⚠️ State should be time-traveled to before executing this
    */
   onCommit (index) {
-    this.baseStateSnapshot = this.lastState
+    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      this.baseStateSnapshot = this.lastState
+    } else {
+      this.legacyBaseSnapshot = this.mutations[index].snapshot
+    }
     this.resetSnapshotCache()
     this.mutations = this.mutations.slice(index + 1)
     this.mutations.forEach((mutation, index) => {
@@ -14335,8 +14341,8 @@ class VuexBackend {
   onImportState (state) {
     var parsed = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* parse */ "r"])(state, true)
     this.initialState = parsed
-    this.reset()
     this.hook.emit('vuex:travel-to-state', parsed)
+    this.reset()
     this.bridge.send('vuex:init')
     this.onInspectState(-1)
   }
@@ -14389,7 +14395,11 @@ class VuexBackend {
    * Reset vuex backend
    */
   reset (stateSnapshot = null) {
-    this.baseStateSnapshot = stateSnapshot || Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.initialState)
+    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      this.baseStateSnapshot = stateSnapshot || Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.initialState)
+    } else {
+      this.legacyBaseSnapshot = this.stringifyStore()
+    }
     this.mutations = []
     this.resetSnapshotCache()
   }
@@ -14423,21 +14433,23 @@ class VuexBackend {
 
     var fakeModule = Object.assign({}, module)
 
-    // Ensure all children state are cloned
-    var replaceNestedStates = (nestedModule) => {
-      if (nestedModule.modules) {
-        Object.keys(nestedModule.modules).forEach(key => {
-          var child = nestedModule.modules[key]
-          var state = {}
-          if (child.state) {
-            state = typeof child.state === 'function' ? child.state() : child.state
-          }
-          child.state = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state)
-          replaceNestedStates(child)
-        })
+    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      // Ensure all children state are cloned
+      var replaceNestedStates = (nestedModule) => {
+        if (nestedModule.modules) {
+          Object.keys(nestedModule.modules).forEach(key => {
+            var child = nestedModule.modules[key]
+            var state = {}
+            if (child.state) {
+              state = typeof child.state === 'function' ? child.state() : child.state
+            }
+            child.state = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state)
+            replaceNestedStates(child)
+          })
+        }
       }
+      replaceNestedStates(fakeModule)
     }
-    replaceNestedStates(fakeModule)
 
     var key = path.join('/')
     var moduleInfo = this.registeredModules[key] = this.allTimeModules[key] = {
@@ -14445,7 +14457,7 @@ class VuexBackend {
       module: fakeModule,
       options: Object.assign({}, options,
         {preserveState: false}),
-      state: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state)
+      state: src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend ? Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state) : null
     }
 
     if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].recordVuex) {
@@ -14512,14 +14524,25 @@ class VuexBackend {
     return !!this.store._modules.get(path)
   }
 
+  stringifyStore () {
+    return Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "x"])({
+      state: this.store.state,
+      getters: this.store.getters || {}
+    })
+  }
+
   /**
    * Handle a new mutation commited to the store
    */
   addMutation (type, payload, options = {}) {
     var index = this.mutations.length
 
+    if (!src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      options.snapshot = this.stringifyStore()
+    }
+
     this.mutations.push(Object.assign({}, {type,
-      payload: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(payload),
+      payload: src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend ? Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(payload) : null,
       index,
       handlers: this.store._mutations[type],
       registeredModules: Object.keys(this.registeredModules)},
@@ -14541,6 +14564,12 @@ class VuexBackend {
    * to re-create what the vuex state should be at this point
    */
   replayMutations (index) {
+    if (!src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      var snapshot = index === -1 ? this.legacyBaseSnapshot : this.mutations[index].snapshot
+      this.lastState = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* parse */ "r"])(snapshot, true).state
+      return snapshot
+    }
+
     var originalVm = this.store._vm
     var originalState = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.store.state)
     this.store._vm = this.snapshotsVm
@@ -14623,12 +14652,20 @@ class VuexBackend {
           this.store._committing = true
           try {
             var payload = mutation.payload
+
+            if (this.isLegacy && !Array.isArray(payload)) {
+              payload = [payload]
+            }
+
             if (Array.isArray(mutation.handlers)) {
-              mutation.handlers.forEach(handler => handler(payload))
+              if (this.isLegacy) {
+                mutation.handlers.forEach(handler => handler(this.store.state, ...payload))
+              } else {
+                mutation.handlers.forEach(handler => handler(payload))
+              }
             } else {
-              if (this.isLegacy || src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuex1) {
-                // Vuex 1
-                mutation.handlers(this.store.state, payload)
+              if (this.isLegacy) {
+                mutation.handlers(this.store.state, ...payload)
               } else {
                 mutation.handlers(payload)
               }
@@ -14653,10 +14690,7 @@ class VuexBackend {
 
     this.lastState = resultState
 
-    var result = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "x"])({
-      state: this.store.state,
-      getters: this.store.getters || {}
-    })
+    var result = this.stringifyStore()
 
     // Restore user state
     tempAddedModules.sort((a, b) => b.length - a.length).forEach(m => {
