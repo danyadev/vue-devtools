@@ -1,6 +1,6 @@
 {
-  "name": "@vkdesktop/vue-devtools",
-  "version": "5.1.0",
+  "name": "@danyadev/vue-devtools",
+  "version": "5.1.1",
   "description": "Расширение для удобной разработки на Vue.js",
   "main": "index.js",
   "repository": "https://github.com/danyadev/vue-devtools",

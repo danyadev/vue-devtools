@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 129);
+/******/ 	return __webpack_require__(__webpack_require__.s = 130);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -92,7 +92,9 @@
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return classify; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return camelize; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return inDoc; });
+/* unused harmony export kebabize */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return getComponentDisplayName; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return inDoc; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return UNDEFINED; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return INFINITY; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return NEGATIVE_INFINITY; });
@@ -100,35 +102,35 @@
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return SPECIAL_TOKENS; });
 /* unused harmony export MAX_STRING_SIZE */
 /* unused harmony export MAX_ARRAY_SIZE */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return specialTokenToString; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return stringify; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return specialTokenToString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return stringify; });
 /* unused harmony export getCustomMapDetails */
 /* unused harmony export reviveMap */
 /* unused harmony export getCustomSetDetails */
 /* unused harmony export reviveSet */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return getComponentName; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return getComponentName; });
 /* unused harmony export getCustomComponentDefinitionDetails */
 /* unused harmony export getCustomFunctionDetails */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return getCustomRefDetails; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return parse; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return isPlainObject; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return searchDeepInObject; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return sortByKey; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return set; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return getCustomRefDetails; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return parse; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return isPlainObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return searchDeepInObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return sortByKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return set; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return get; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return has; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return scrollIntoView; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return has; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return scrollIntoView; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return focusInput; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return openInEditor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return openInEditor; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return escape; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return copyToClipboard; });
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _transfer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
-/* harmony import */ var src_backend__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
-/* harmony import */ var src_backend_vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
-/* harmony import */ var src_backend_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
-/* harmony import */ var src_shared_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(2);
+/* harmony import */ var _transfer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var src_backend__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var src_backend_vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(10);
+/* harmony import */ var src_backend_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
+/* harmony import */ var src_shared_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(3);
 /* harmony import */ var _devtools_env__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(1);
 
 
@@ -159,8 +161,29 @@ var camelize = cached((str) => {
   return str.replace(camelizeRE, toUpper)
 })
 
+var kebabizeRE = /([a-z0-9])([A-Z])/g
+var kebabize = cached((str) => {
+  return str && str
+    .replace(kebabizeRE, (_, lowerCaseCharacter, upperCaseLetter) => {
+      return `${lowerCaseCharacter}-${upperCaseLetter}`
+    })
+    .toLowerCase()
+})
+
 function toUpper (_, c) {
   return c ? c.toUpperCase() : ''
+}
+
+function getComponentDisplayName (originalName, style = 'class') {
+  switch (style) {
+    case 'class':
+      return classify(originalName)
+    case 'kebab':
+      return kebabize(originalName)
+    case 'original':
+    default:
+      return originalName
+  }
 }
 
 function inDoc (node) {
@@ -298,6 +321,8 @@ function replacer (key) {
       return encodeCache.cache(val, () => Object(src_backend__WEBPACK_IMPORTED_MODULE_2__[/* getCustomInstanceDetails */ "a"])(val))
     } else if (typeof val.render === 'function') {
       return encodeCache.cache(val, () => getCustomComponentDefinitionDetails(val))
+    } else if (val.constructor && val.constructor.name === 'VNode') {
+      return `[native VNode <${val.tag}>]`
     }
   } else if (Number.isNaN(val)) {
     return NAN
@@ -676,7 +701,7 @@ function has (object, path, parent = false) {
 
   var sections = Array.isArray(path) ? path : path.split('.')
   var size = !parent ? 1 : 2
-  while (sections.length > size) {
+  while (object && sections.length > size) {
     object = object[sections.shift()]
   }
   return object != null && object.hasOwnProperty(sections[0])
@@ -806,11 +831,627 @@ function initEnv (Vue) {
   if (isLinux) { document.body.classList.add('platform-linux') }
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8)))
 
 /***/ }),
 
 /***/ 10:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return initVuexBackend; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getCustomStoreDetails; });
+/* harmony import */ var src_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var src_shared_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var _clone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
+
+
+
+
+
+
+var isProd = "production" === 'production'
+
+class VuexBackend {
+  constructor (hook, bridge, isLegacy) {
+    bridge.send('vuex:init')
+
+    this.hook = hook
+    this.bridge = bridge
+    this.isLegacy = isLegacy
+    this.store = hook.store
+
+    // Flush info from hook
+    // (for example, modules registered before backend was created)
+    this.earlyModules = hook.flushStoreModules()
+
+    /** Initial store state */
+    this.initialState = this.hook.initialState
+
+    /** Internal store vm for mutation replaying */
+    this.snapshotsVm = null
+
+    /** Initial snapshot */
+    this.baseStateSnapshot = null
+    /** Snapshot cache */
+    this.stateSnapshotCache = null
+    /** Mutation history */
+    this.mutations = null
+    /** Last replayed state */
+    this.lastState = null
+    /** Currently registered dynamic modules */
+    this.registeredModules = {}
+    /** All dynamic modules ever registered, useful for mutation replaying */
+    this.allTimeModules = {}
+    /** Legacy base state */
+    this.legacyBaseSnapshot = null
+
+    // First-time snapshot VM creation
+    this.resetSnapshotsVm()
+    // Initial setup
+    this.reset()
+
+    // Override dynamic module handling in vuex
+    if (this.store.registerModule) {
+      this.origRegisterModule = this.store.registerModule.bind(this.store)
+      this.store.registerModule = (path, module, options) => {
+        this.addModule(path, module, options)
+        this.origRegisterModule(path, module, options)
+        if (!isProd) { console.log('register module', path) }
+      }
+
+      this.origUnregisterModule = this.store.unregisterModule.bind(this.store)
+      this.store.unregisterModule = (path) => {
+        this.removeModule(path)
+        this.origUnregisterModule(path)
+        if (!isProd) { console.log('unregister module', path) }
+      }
+    } else {
+      this.origRegisterModule = this.origUnregisterModule = () => {}
+    }
+
+    // Register modules that were added before backend was created
+    this.earlyModules.forEach((ref) => {
+    var path = ref.path;
+    var module = ref.module;
+    var options = ref.options;
+
+      var moduleInfo = this.addModule(path, module, options)
+      moduleInfo.early = true
+    })
+
+    // deal with multiple backend injections
+    hook.off('vuex:mutation')
+
+    // application -> devtool
+    hook.on('vuex:mutation', this.onMutation.bind(this))
+
+    // devtool -> application
+    bridge.on('vuex:travel-to-state', this.onTravelToState.bind(this))
+    bridge.on('vuex:commit-all', this.onCommitAll.bind(this))
+    bridge.on('vuex:revert-all', this.onRevertAll.bind(this))
+    bridge.on('vuex:commit', this.onCommit.bind(this))
+    bridge.on('vuex:revert', this.onRevert.bind(this))
+    bridge.on('vuex:import-state', this.onImportState.bind(this))
+    bridge.on('vuex:inspect-state', this.onInspectState.bind(this))
+    bridge.on('vuex:edit-state', this.onEditState.bind(this))
+  }
+
+  /**
+   * Register a mutation record
+   */
+  onMutation (ref) {
+    var type = ref.type;
+    var payload = ref.payload;
+
+    if (!src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].recordVuex) { return }
+
+    this.addMutation(type, payload)
+  }
+
+  /**
+   * Time-travel to the state of a specific mutation (by index)
+   */
+  onTravelToState (ref) {
+    var index = ref.index;
+    var apply = ref.apply;
+
+    var snapshot = this.replayMutations(index)
+    var state = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.lastState)
+    this.bridge.send('vuex:inspected-state', {
+      index,
+      snapshot
+    })
+    if (apply) {
+      this.ensureRegisteredModules(this.mutations[index])
+      this.hook.emit('vuex:travel-to-state', state)
+    }
+  }
+
+  onCommitAll () {
+    this.reset(this.lastState)
+  }
+
+  onRevertAll () {
+    this.reset()
+  }
+
+  /**
+   * Reset the base state to a specific mutation (by index)
+   *
+   * ⚠️ State should be time-traveled to before executing this
+   */
+  onCommit (index) {
+    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      this.baseStateSnapshot = this.lastState
+    } else {
+      this.legacyBaseSnapshot = this.mutations[index].snapshot
+    }
+    this.resetSnapshotCache()
+    this.mutations = this.mutations.slice(index + 1)
+    this.mutations.forEach((mutation, index) => {
+      mutation.index = index
+    })
+  }
+
+  /**
+   * Removes mutations after a specific mutation (by index)
+   *
+   * ⚠️ State should be time-traveled to before executing this
+   */
+  onRevert (index) {
+    this.resetSnapshotCache()
+    this.ensureRegisteredModules(this.mutations[index - 1])
+    this.mutations = this.mutations.slice(0, index)
+  }
+
+  /**
+   * Parse and time-travel to a state
+   */
+  onImportState (state) {
+    var parsed = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* parse */ "s"])(state, true)
+    this.initialState = parsed
+    this.hook.emit('vuex:travel-to-state', parsed)
+    this.reset()
+    this.bridge.send('vuex:init')
+    this.onInspectState(-1)
+  }
+
+  /**
+   * If the index is -1, sends the base state.
+   * Else replays the mutations up to the <index> mutation.
+   */
+  onInspectState (index) {
+    var snapshot = this.replayMutations(index)
+    this.bridge.send('vuex:inspected-state', {
+      index,
+      snapshot
+    })
+  }
+
+  onEditState (ref) {
+    var index = ref.index;
+    var value = ref.value;
+    var path = ref.path;
+
+    var parsedValue
+    if (value) {
+      parsedValue = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* parse */ "s"])(value, true)
+    }
+    this.store._committing = true
+    Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* set */ "v"])(this.store.state, path, parsedValue)
+    this.store._committing = false
+    this.bridge.send('vuex:inspected-state', {
+      index,
+      snapshot: this.getStoreSnapshot()
+    })
+    this.cacheStateSnapshot(index, true)
+  }
+
+  /**
+   * Should be called when store structure changes,
+   * for example when a dynamic module is registered
+   */
+  resetSnapshotsVm (state) {
+    this.snapshotsVm = new vue__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
+      data: {
+        $$state: state || {}
+      },
+      computed: this.store._vm.$options.computed
+    })
+  }
+
+  /**
+   * Reset vuex backend
+   */
+  reset (stateSnapshot = null) {
+    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      this.baseStateSnapshot = stateSnapshot || Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.initialState)
+    } else {
+      this.legacyBaseSnapshot = this.stringifyStore()
+    }
+    this.mutations = []
+    this.resetSnapshotCache()
+  }
+
+  resetSnapshotCache () {
+    this.stateSnapshotCache = [
+      {
+        index: -1,
+        state: this.baseStateSnapshot,
+        permanent: true
+      }
+    ]
+  }
+
+  /**
+   * Handle adding a dynamic store module
+   */
+  addModule (path, module, options) {
+    if (typeof path === 'string') { path = [path] }
+
+    var state
+    if (options && options.preserveState) {
+      state = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* get */ "k"])(this.store.state, path)
+    }
+    if (!state) {
+      state = typeof module.state === 'function' ? module.state() : module.state
+    }
+    if (!state) {
+      state = {}
+    }
+
+    var fakeModule = Object.assign({}, module)
+
+    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      // Ensure all children state are cloned
+      var replaceNestedStates = (nestedModule) => {
+        if (nestedModule.modules) {
+          Object.keys(nestedModule.modules).forEach(key => {
+            var child = nestedModule.modules[key]
+            var state = {}
+            if (child.state) {
+              state = typeof child.state === 'function' ? child.state() : child.state
+            }
+            child.state = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state)
+            replaceNestedStates(child)
+          })
+        }
+      }
+      replaceNestedStates(fakeModule)
+    }
+
+    var key = path.join('/')
+    var moduleInfo = this.registeredModules[key] = this.allTimeModules[key] = {
+      path,
+      module: fakeModule,
+      options: Object.assign({}, options,
+        {preserveState: false}),
+      state: src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend ? Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state) : null
+    }
+
+    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].recordVuex) {
+      this.addMutation(`Register module: ${key}`, {
+        path,
+        module,
+        options
+      }, {
+        registerModule: true
+      })
+    }
+
+    return moduleInfo
+  }
+
+  /**
+   * Handle removing a dynamic store module
+   */
+  removeModule (path) {
+    if (typeof path === 'string') { path = [path] }
+
+    delete this.registeredModules[path.join('/')]
+
+    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].recordVuex) {
+      this.addMutation(`Unregister module: ${path.join('/')}`, {
+        path
+      }, {
+        unregisterModule: true
+      })
+    }
+  }
+
+  /**
+   * Make sure all (and only) the dynamic modules present at the moment of a mutation
+   * are correctly registered in the store
+   */
+  ensureRegisteredModules (mutation) {
+    if (mutation) {
+      mutation.registeredModules.forEach(m => {
+        if (!Object.keys(this.registeredModules).sort((a, b) => a.length - b.length).includes(m)) {
+          var data = this.allTimeModules[m]
+          if (data) {
+            var { path, module, options, state } = data
+            this.origRegisterModule(path, Object.assign({}, module,
+              {state: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state)}), options)
+            this.registeredModules[path.join('/')] = data
+          }
+        }
+      })
+      Object.keys(this.registeredModules).sort((a, b) => b.length - a.length).forEach(m => {
+        if (!mutation.registeredModules.includes(m)) {
+          this.origUnregisterModule(m.split('/'))
+          delete this.registeredModules[m]
+        }
+      })
+      this.resetSnapshotsVm(this.store.state)
+    }
+  }
+
+  /**
+   * Check if the store as a specific dynamic module
+   */
+  hasModule (path) {
+    return !!this.store._modules.get(path)
+  }
+
+  stringifyStore () {
+    return Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "y"])({
+      state: this.store.state,
+      getters: this.store.getters || {}
+    })
+  }
+
+  /**
+   * Handle a new mutation commited to the store
+   */
+  addMutation (type, payload, options = {}) {
+    var index = this.mutations.length
+
+    if (!src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      options.snapshot = this.stringifyStore()
+    }
+
+    this.mutations.push(Object.assign({}, {type,
+      payload: src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend ? Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(payload) : null,
+      index,
+      handlers: this.store._mutations[type],
+      registeredModules: Object.keys(this.registeredModules)},
+      options))
+
+    this.bridge.send('vuex:mutation', {
+      mutation: {
+        type: type,
+        payload: Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "y"])(payload),
+        index
+      },
+      timestamp: Date.now(),
+      options
+    })
+  }
+
+  /**
+   * Replays mutations from the base state up to a specific index
+   * to re-create what the vuex state should be at this point
+   */
+  replayMutations (index) {
+    if (!src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
+      var snapshot = index === -1 ? this.legacyBaseSnapshot : this.mutations[index].snapshot
+      this.lastState = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* parse */ "s"])(snapshot, true).state
+      return snapshot
+    }
+
+    var originalVm = this.store._vm
+    var originalState = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.store.state)
+    this.store._vm = this.snapshotsVm
+
+    var tempRemovedModules = []
+    var tempAddedModules = []
+
+    // If base state, we need to remove all dynamic registered modules
+    // to prevent errors because their state is missing
+    if (index === -1) {
+      tempRemovedModules = Object.keys(this.registeredModules)
+      tempRemovedModules.filter(m => this.hasModule(m.split('/'))).sort((a, b) => b.length - a.length).forEach(m => {
+        this.origUnregisterModule(m.split('/'))
+        if (!isProd) { console.log('before replay unregister', m) }
+      })
+    }
+
+    // Get most recent snapshot for target index
+    // for faster replay
+    var stateSnapshot
+    for (var i = 0; i < this.stateSnapshotCache.length; i++) {
+      var s = this.stateSnapshotCache[i]
+      if (s.index > index) {
+        break
+      } else {
+        stateSnapshot = s
+      }
+    }
+
+    var resultState
+
+    // Snapshot was already replayed
+    if (stateSnapshot.index === index) {
+      resultState = stateSnapshot.state
+
+      var state = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(stateSnapshot.state)
+      this.resetSnapshotsVm(state)
+      this.store.replaceState(state)
+    } else {
+      // Update state when using fake vm to properly temporarily remove modules
+      this.resetSnapshotsVm(originalState)
+      this.store.replaceState(originalState)
+      // Temporarily remove modules if they where not present during first mutation being replayed
+      var startMutation = this.mutations[stateSnapshot.index]
+      if (startMutation) {
+        tempRemovedModules = Object.keys(this.registeredModules).filter(m => !startMutation.registeredModules.includes(m))
+      } else {
+        tempRemovedModules = Object.keys(this.registeredModules)
+      }
+      tempRemovedModules.filter(m => this.hasModule(m.split('/'))).sort((a, b) => b.length - a.length).forEach(m => {
+        this.origUnregisterModule(m.split('/'))
+        if (!isProd) { console.log('before replay unregister', m) }
+      })
+
+      var state$1 = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(stateSnapshot.state)
+      this.resetSnapshotsVm(state$1)
+      this.store.replaceState(state$1)
+
+      src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].snapshotLoading = true
+
+      // Replay mutations
+      for (var i$1 = stateSnapshot.index + 1; i$1 <= index; i$1++) {
+        var mutation = this.mutations[i$1]
+        if (mutation.registerModule) {
+          var key = mutation.payload.path.join('/')
+          var moduleInfo = this.allTimeModules[key]
+          tempAddedModules.push(key)
+          this.origRegisterModule(moduleInfo.path, Object.assign({}, moduleInfo.module,
+            {state: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(moduleInfo.state)}), moduleInfo.options)
+          this.resetSnapshotsVm(this.store.state)
+          if (!isProd) { console.log('replay register module', moduleInfo) }
+        } else if (mutation.unregisterModule && this.hasModule(mutation.payload.path)) {
+          var path = mutation.payload.path
+          var index$1 = tempAddedModules.indexOf(path.join('/'))
+          if (index$1 !== -1) { tempAddedModules.splice(index$1, 1) }
+          this.origUnregisterModule(path)
+          this.resetSnapshotsVm(this.store.state)
+          if (!isProd) { console.log('replay unregister module', path) }
+        } else if (mutation.handlers) {
+          this.store._committing = true
+          try {
+            var payload = mutation.payload
+
+            if (this.isLegacy && !Array.isArray(payload)) {
+              payload = [payload]
+            }
+
+            if (Array.isArray(mutation.handlers)) {
+              if (this.isLegacy) {
+                mutation.handlers.forEach(handler => handler(this.store.state, ...payload))
+              } else {
+                mutation.handlers.forEach(handler => handler(payload))
+              }
+            } else {
+              if (this.isLegacy) {
+                mutation.handlers(this.store.state, ...payload)
+              } else {
+                mutation.handlers(payload)
+              }
+            }
+          } catch (e) {
+            throw e
+          }
+          this.store._committing = false
+        }
+
+        // Optimization: periodically cache snapshots
+        if (i$1 === index || (i$1 % src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].cacheVuexSnapshotsEvery === 0)) {
+          this.cacheStateSnapshot(i$1)
+        }
+      }
+
+      // Send final state after replay
+      resultState = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.store.state)
+
+      if (!isProd) { console.log(`replayed ${index - stateSnapshot.index} mutation(s)`) }
+    }
+
+    this.lastState = resultState
+
+    var result = this.stringifyStore()
+
+    // Restore user state
+    tempAddedModules.sort((a, b) => b.length - a.length).forEach(m => {
+      this.origUnregisterModule(m.split('/'))
+      if (!isProd) { console.log('after replay unregister', m) }
+    })
+    tempRemovedModules.sort((a, b) => a.length - b.length).forEach(m => {
+      var { path, module, options, state } = this.registeredModules[m]
+      this.origRegisterModule(path, Object.assign({}, module,
+        {state: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state)}), options)
+      if (!isProd) { console.log('after replay register', m) }
+    })
+    this.store._vm = originalVm
+
+    return result
+  }
+
+  cacheStateSnapshot (index, permanent = false) {
+    this.removeCachedStateSnapshot(index)
+    this.stateSnapshotCache.push({
+      index,
+      state: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.store.state),
+      permanent
+    })
+    if (!isProd) { console.log('cached snapshot', index) }
+    // Delete old cached snapshots
+    if (this.stateSnapshotCache.filter(s => !s.permanent).length > src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].cacheVuexSnapshotsLimit) {
+      var i = this.stateSnapshotCache.findIndex(s => !s.permanent)
+      if (i !== -1) {
+        if (!isProd) { console.log('clean cached snapshot', this.stateSnapshotCache[i].index) }
+        this.stateSnapshotCache.splice(i, 1)
+      }
+    }
+  }
+
+  removeCachedStateSnapshot (index) {
+    var i = this.stateSnapshotCache.findIndex(s => s.idex === index)
+    if (i !== -1) { this.stateSnapshotCache.splice(i, 1) }
+  }
+
+  /**
+   * Get the serialized state and getters from the store
+   */
+  getStoreSnapshot (stateSnapshot = null) {
+    var originalVm
+    if (stateSnapshot) {
+      originalVm = this.store._vm
+      this.store._vm = this.snapshotsVm
+      this.store.replaceState(Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(stateSnapshot))
+    }
+
+    var result = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "y"])({
+      state: this.store.state,
+      getters: this.store.getters || {}
+    })
+
+    if (stateSnapshot) {
+      // Restore user state
+      this.store._vm = originalVm
+    }
+
+    return result
+  }
+}
+
+function initVuexBackend (hook, bridge, isLegacy) {
+  // eslint-disable-next-line no-new
+  new VuexBackend(hook, bridge, isLegacy)
+}
+
+function getCustomStoreDetails (store) {
+  return {
+    _custom: {
+      type: 'store',
+      display: 'Store',
+      value: {
+        state: store.state,
+        getters: store.getters
+      },
+      fields: {
+        abstract: true
+      }
+    }
+  }
+}
+
+
+/***/ }),
+
+/***/ 11:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -830,7 +1471,7 @@ function initRouterBackend (Vue, bridge, rootInstances) {
         routeChanges.push(...router.options.routes)
       }
     })
-    return Object(_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "x"])({
+    return Object(_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "y"])({
       routeChanges
     })
   }
@@ -847,13 +1488,13 @@ function initRouterBackend (Vue, bridge, rootInstances) {
     if (router) {
       router.afterEach((to, from) => {
         if (!recording) { return }
-        bridge.send('router:changed', Object(_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "x"])({
+        bridge.send('router:changed', Object(_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "y"])({
           to,
           from,
           timestamp: Date.now()
         }))
       })
-      bridge.send('router:init', Object(_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "x"])({
+      bridge.send('router:init', Object(_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "y"])({
         mode: router.mode,
         current: {
           from: router.history.current,
@@ -866,7 +1507,7 @@ function initRouterBackend (Vue, bridge, rootInstances) {
         var addRoutes = router.matcher.addRoutes
         router.matcher.addRoutes = function (routes) {
           routes.forEach((item) => {
-            bridge.send('routes:changed', Object(_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "x"])(item))
+            bridge.send('routes:changed', Object(_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "y"])(item))
           })
           addRoutes.call(this, routes)
         }
@@ -894,7 +1535,7 @@ function getCustomRouterDetails (router) {
 
 /***/ }),
 
-/***/ 11:
+/***/ 12:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -903,7 +1544,7 @@ function getCustomRouterDetails (router) {
 var util = __webpack_require__(0);
 
 // EXTERNAL MODULE: /home/akryum/Projects/vue-devtools/src/shared-data.js
-var shared_data = __webpack_require__(2);
+var shared_data = __webpack_require__(3);
 
 // EXTERNAL MODULE: /home/akryum/Projects/vue-devtools/src/devtools/env.js
 var env = __webpack_require__(1);
@@ -956,8 +1597,8 @@ function highlight (instance) {
   init()
   if (rect) {
     var content = []
-    var name = instance.fnContext ? Object(util["l" /* getComponentName */])(instance.fnOptions) : getInstanceName(instance)
-    if (shared_data["a" /* default */].classifyComponents) { name = Object(util["g" /* classify */])(name) }
+    var name = instance.fnContext ? Object(util["m" /* getComponentName */])(instance.fnOptions) : getInstanceName(instance)
+    name = Object(util["l" /* getComponentDisplayName */])(name, shared_data["a" /* default */].componentNameStyle)
     if (name) {
       var pre = document.createElement('span')
       pre.style.opacity = '0.6'
@@ -996,7 +1637,7 @@ function getInstanceOrVnodeRect (instance) {
 
     return
   }
-  if (!Object(util["o" /* inDoc */])(el)) {
+  if (!Object(util["p" /* inDoc */])(el)) {
     return
   }
   if (instance._isFragment) {
@@ -1099,7 +1740,7 @@ function highlighter_util () {
 }
 
 // EXTERNAL MODULE: /home/akryum/Projects/vue-devtools/src/backend/vuex.js
-var vuex = __webpack_require__(9);
+var vuex = __webpack_require__(10);
 
 // CONCATENATED MODULE: /home/akryum/Projects/vue-devtools/src/backend/events.js
 
@@ -1122,7 +1763,7 @@ function initEventsBackend (Vue, bridge) {
     // this also ensures the event is only logged for direct $emit (source)
     // instead of by $dispatch/$broadcast
     if (typeof eventName === 'string' && !internalRE.test(eventName)) {
-      bridge.send('event:triggered', Object(util["x" /* stringify */])({
+      bridge.send('event:triggered', Object(util["y" /* stringify */])({
         eventName,
         type,
         payload,
@@ -1152,7 +1793,7 @@ function initEventsBackend (Vue, bridge) {
 }
 
 // EXTERNAL MODULE: /home/akryum/Projects/vue-devtools/src/backend/router.js
-var router = __webpack_require__(10);
+var router = __webpack_require__(11);
 
 // CONCATENATED MODULE: /home/akryum/Projects/vue-devtools/src/backend/perf.js
 
@@ -1285,7 +1926,7 @@ function applyHooks (vm) {
 
 function addComponentMetric (options, type, start, end) {
   var duration = end - start
-  var name = Object(util["l" /* getComponentName */])(options)
+  var name = Object(util["m" /* getComponentName */])(options)
 
   var metric = componentMetrics[name] = componentMetrics[name] || {
     id: name,
@@ -1413,6 +2054,9 @@ class component_selector_ComponentSelector {
   }
 }
 
+// EXTERNAL MODULE: /home/akryum/Projects/vue-devtools/src/storage.js
+var storage = __webpack_require__(9);
+
 // CONCATENATED MODULE: /home/akryum/Projects/vue-devtools/src/backend/index.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return backend_instanceMap; });
 /* unused harmony export functionalVnodeMap */
@@ -1425,6 +2069,7 @@ class component_selector_ComponentSelector {
 /* unused harmony export inspectInstance */
 // This is the backend that is injected into the page that a Vue app lives in
 // when the Vue Devtools panel is activated.
+
 
 
 
@@ -1472,130 +2117,132 @@ function initBackend (_bridge) {
 }
 
 function connect (Vue) {
-  Object(shared_data["c" /* init */])({
-    bridge: backend_bridge,
-    Vue
-  })
+  Object(storage["b" /* init */])().then(() => {
+    Object(shared_data["c" /* init */])({
+      bridge: backend_bridge,
+      Vue
+    })
 
-  backend_hook.currentTab = 'components'
-  backend_bridge.on('switch-tab', tab => {
-    backend_hook.currentTab = tab
-    if (tab === 'components') {
+    backend_hook.currentTab = 'components'
+    backend_bridge.on('switch-tab', tab => {
+      backend_hook.currentTab = tab
+      if (tab === 'components') {
+        flush()
+      }
+    })
+
+    // the backend may get injected to the same page multiple times
+    // if the user closes and reopens the devtools.
+    // make sure there's only one flush listener.
+    backend_hook.off('flush')
+    backend_hook.on('flush', () => {
+      if (backend_hook.currentTab === 'components') {
+        flush()
+      }
+    })
+
+    backend_bridge.on('select-instance', id => {
+      currentInspectedId = id
+      var instance = findInstanceOrVnode(id)
+      if (!instance) { return }
+      if (!/:functional:/.test(id)) { bindToConsole(instance) }
       flush()
-    }
-  })
+      backend_bridge.send('instance-selected')
+    })
 
-  // the backend may get injected to the same page multiple times
-  // if the user closes and reopens the devtools.
-  // make sure there's only one flush listener.
-  backend_hook.off('flush')
-  backend_hook.on('flush', () => {
-    if (backend_hook.currentTab === 'components') {
+    backend_bridge.on('scroll-to-instance', id => {
+      var instance = findInstanceOrVnode(id)
+      if (instance) {
+        scrollIntoView(instance)
+        highlight(instance)
+      }
+    })
+
+    backend_bridge.on('filter-instances', _filter => {
+      filter = _filter.toLowerCase()
       flush()
+    })
+
+    backend_bridge.on('refresh', scan)
+
+    backend_bridge.on('enter-instance', id => {
+      var instance = findInstanceOrVnode(id)
+      if (instance) { highlight(instance) }
+    })
+
+    backend_bridge.on('leave-instance', unHighlight)
+
+    // eslint-disable-next-line no-new
+    new component_selector_ComponentSelector(backend_bridge, backend_instanceMap)
+
+    // Get the instance id that is targeted by context menu
+    backend_bridge.on('get-context-menu-target', () => {
+      var instance = env["f" /* target */].__VUE_DEVTOOLS_CONTEXT_MENU_TARGET__
+
+      env["f" /* target */].__VUE_DEVTOOLS_CONTEXT_MENU_TARGET__ = null
+      env["f" /* target */].__VUE_DEVTOOLS_CONTEXT_MENU_HAS_TARGET__ = false
+
+      if (instance) {
+        var id = instance.__VUE_DEVTOOLS_UID__
+        if (id) {
+          return backend_bridge.send('inspect-instance', id)
+        }
+      }
+
+      toast('No Vue component was found', 'warn')
+    })
+
+    backend_bridge.on('set-instance-data', args => {
+      setStateValue(args)
+      flush()
+    })
+
+    // vuex
+    if (backend_hook.store) {
+      Object(vuex["b" /* initVuexBackend */])(backend_hook, backend_bridge, backend_hook.store.commit === undefined)
+    } else {
+      backend_hook.once('vuex:init', store => {
+        Object(vuex["b" /* initVuexBackend */])(backend_hook, backend_bridge, store.commit === undefined)
+      })
     }
-  })
 
-  backend_bridge.on('select-instance', id => {
-    currentInspectedId = id
-    var instance = findInstanceOrVnode(id)
-    if (!instance) { return }
-    if (!/:functional:/.test(id)) { bindToConsole(instance) }
-    flush()
-    backend_bridge.send('instance-selected')
-  })
+    backend_hook.once('router:init', () => {
+      Object(router["b" /* initRouterBackend */])(backend_hook.Vue, backend_bridge, rootInstances)
+    })
 
-  backend_bridge.on('scroll-to-instance', id => {
-    var instance = findInstanceOrVnode(id)
-    if (instance) {
-      scrollIntoView(instance)
-      highlight(instance)
-    }
-  })
+    // events
+    initEventsBackend(Vue, backend_bridge)
 
-  backend_bridge.on('filter-instances', _filter => {
-    filter = _filter.toLowerCase()
-    flush()
-  })
+    env["f" /* target */].__VUE_DEVTOOLS_INSPECT__ = inspectInstance
 
-  backend_bridge.on('refresh', scan)
+    // User project devtools config
+    if (env["f" /* target */].hasOwnProperty('VUE_DEVTOOLS_CONFIG')) {
+      var config = env["f" /* target */].VUE_DEVTOOLS_CONFIG
 
-  backend_bridge.on('enter-instance', id => {
-    var instance = findInstanceOrVnode(id)
-    if (instance) { highlight(instance) }
-  })
-
-  backend_bridge.on('leave-instance', unHighlight)
-
-  // eslint-disable-next-line no-new
-  new component_selector_ComponentSelector(backend_bridge, backend_instanceMap)
-
-  // Get the instance id that is targeted by context menu
-  backend_bridge.on('get-context-menu-target', () => {
-    var instance = env["f" /* target */].__VUE_DEVTOOLS_CONTEXT_MENU_TARGET__
-
-    env["f" /* target */].__VUE_DEVTOOLS_CONTEXT_MENU_TARGET__ = null
-    env["f" /* target */].__VUE_DEVTOOLS_CONTEXT_MENU_HAS_TARGET__ = false
-
-    if (instance) {
-      var id = instance.__VUE_DEVTOOLS_UID__
-      if (id) {
-        return backend_bridge.send('inspect-instance', id)
+      // Open in editor
+      if (config.hasOwnProperty('openInEditorHost')) {
+        shared_data["a" /* default */].openInEditorHost = config.openInEditorHost
       }
     }
 
-    toast('No Vue component was found', 'warn')
-  })
-
-  backend_bridge.on('set-instance-data', args => {
-    setStateValue(args)
-    flush()
-  })
-
-  // vuex
-  if (backend_hook.store) {
-    Object(vuex["b" /* initVuexBackend */])(backend_hook, backend_bridge, backend_hook.store.commit === undefined)
-  } else {
-    backend_hook.once('vuex:init', store => {
-      Object(vuex["b" /* initVuexBackend */])(backend_hook, backend_bridge, store.commit === undefined)
+    backend_bridge.log('backend ready.')
+    backend_bridge.send('ready', Vue.version)
+    backend_bridge.on('log-detected-vue', () => {
+      console.log(
+        `%c vue-devtools %c Detected Vue v${Vue.version} %c`,
+        'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
+        'background:#41b883 ; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff',
+        'background:transparent'
+      )
     })
-  }
 
-  backend_hook.once('router:init', () => {
-    Object(router["b" /* initRouterBackend */])(backend_hook.Vue, backend_bridge, rootInstances)
+    setTimeout(() => {
+      scan()
+
+      // perf
+      initPerfBackend(Vue, backend_bridge, backend_instanceMap)
+    }, 0)
   })
-
-  // events
-  initEventsBackend(Vue, backend_bridge)
-
-  env["f" /* target */].__VUE_DEVTOOLS_INSPECT__ = inspectInstance
-
-  // User project devtools config
-  if (env["f" /* target */].hasOwnProperty('VUE_DEVTOOLS_CONFIG')) {
-    var config = env["f" /* target */].VUE_DEVTOOLS_CONFIG
-
-    // Open in editor
-    if (config.hasOwnProperty('openInEditorHost')) {
-      shared_data["a" /* default */].openInEditorHost = config.openInEditorHost
-    }
-  }
-
-  backend_bridge.log('backend ready.')
-  backend_bridge.send('ready', Vue.version)
-  backend_bridge.on('log-detected-vue', () => {
-    console.log(
-      `%c vue-devtools %c Detected Vue v${Vue.version} %c`,
-      'background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff',
-      'background:#41b883 ; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff',
-      'background:transparent'
-    )
-  })
-
-  setTimeout(() => {
-    scan()
-
-    // perf
-    initPerfBackend(Vue, backend_bridge, backend_instanceMap)
-  }, 0)
 }
 
 function findInstanceOrVnode (id) {
@@ -1702,7 +2349,7 @@ function flush () {
   functionalIds.clear()
   captureIds.clear()
   if (false) {}
-  var payload = Object(util["x" /* stringify */])({
+  var payload = Object(util["y" /* stringify */])({
     inspectedInstance: getInstanceDetails(currentInspectedId),
     instances: findQualifiedChildrenFromList(rootInstances)
   })
@@ -1930,7 +2577,7 @@ function getInstanceDetails (id) {
 
     var data = {
       id,
-      name: Object(util["l" /* getComponentName */])(vnode.fnOptions),
+      name: Object(util["m" /* getComponentName */])(vnode.fnOptions),
       file: vnode.fnOptions.__file || null,
       state: processProps(Object.assign({}, {$options: vnode.fnOptions}, (vnode.devtoolsMeta && vnode.devtoolsMeta.renderContext.props))),
       functional: true
@@ -2003,7 +2650,7 @@ function reduceStateList (list) {
  */
 
 function getInstanceName (instance) {
-  var name = Object(util["l" /* getComponentName */])(instance.$options || instance.fnOptions || {})
+  var name = Object(util["m" /* getComponentName */])(instance.$options || instance.fnOptions || {})
   if (name) { return name }
   return instance.$root === instance
     ? 'Root'
@@ -2127,7 +2774,7 @@ function processState (instance) {
 function processRefs (instance) {
   return Object.keys(instance.$refs)
     .filter(key => instance.$refs[key])
-    .map(key => Object(util["m" /* getCustomRefDetails */])(instance, key, instance.$refs[key]))
+    .map(key => Object(util["n" /* getCustomRefDetails */])(instance, key, instance.$refs[key]))
 }
 
 /**
@@ -2386,16 +3033,16 @@ function setStateValue (ref) {
     try {
       var parsedValue
       if (value) {
-        parsedValue = Object(util["r" /* parse */])(value, true)
+        parsedValue = Object(util["s" /* parse */])(value, true)
       }
       var api = isLegacy ? {
         $set: backend_hook.Vue.set,
         $delete: backend_hook.Vue.delete
       } : instance
-      var data = Object(util["n" /* has */])(instance._props, path, newKey)
+      var data = Object(util["o" /* has */])(instance._props, path, newKey)
         ? instance._props
         : instance._data
-      Object(util["u" /* set */])(data, path, parsedValue, (obj, field, value) => {
+      Object(util["v" /* set */])(data, path, parsedValue, (obj, field, value) => {
         (remove || newKey) && api.$delete(obj, field)
         !remove && api.$set(obj, newKey || field, value)
       })
@@ -2428,7 +3075,7 @@ function initRightClick () {
 
 /***/ }),
 
-/***/ 12:
+/***/ 13:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2542,13 +3189,13 @@ function stringifyStrict (data, replacer, space) {
 
 /***/ }),
 
-/***/ 129:
+/***/ 130:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var src_backend__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
-/* harmony import */ var src_bridge__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
+/* harmony import */ var src_backend__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
+/* harmony import */ var src_bridge__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
 // this is injected to the app page when the panel is activated.
 
 
@@ -2593,7 +3240,7 @@ function handshake (e) {
 
 /***/ }),
 
-/***/ 13:
+/***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2607,9 +3254,9 @@ function handshake (e) {
 
 
 
-var base64 = __webpack_require__(14)
-var ieee754 = __webpack_require__(15)
-var isArray = __webpack_require__(16)
+var base64 = __webpack_require__(15)
+var ieee754 = __webpack_require__(16)
+var isArray = __webpack_require__(17)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -4387,11 +5034,11 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8)))
 
 /***/ }),
 
-/***/ 14:
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4550,7 +5197,7 @@ function fromByteArray (uint8) {
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -4641,7 +5288,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 /***/ }),
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -4653,7 +5300,7 @@ module.exports = Array.isArray || function (arr) {
 
 /***/ }),
 
-/***/ 17:
+/***/ 18:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -4844,10 +5491,13 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 18:
+/***/ 19:
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
+/* WEBPACK VAR INJECTION */(function(process) {// .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
+// backported and transplited with Babel, with backwards-compat fixes
+
+// Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the
@@ -4897,14 +5547,6 @@ function normalizeArray(parts, allowAboveRoot) {
 
   return parts;
 }
-
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
-};
 
 // path.resolve([from ...], to)
 // posix version
@@ -5021,37 +5663,120 @@ exports.relative = function(from, to) {
 exports.sep = '/';
 exports.delimiter = ':';
 
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
-
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
+exports.dirname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  if (path.length === 0) return '.';
+  var code = path.charCodeAt(0);
+  var hasRoot = code === 47 /*/*/;
+  var end = -1;
+  var matchedSlash = true;
+  for (var i = path.length - 1; i >= 1; --i) {
+    code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        if (!matchedSlash) {
+          end = i;
+          break;
+        }
+      } else {
+      // We saw the first non-path separator
+      matchedSlash = false;
+    }
   }
 
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
+  if (end === -1) return hasRoot ? '/' : '.';
+  if (hasRoot && end === 1) {
+    // return '//';
+    // Backwards-compat fix:
+    return '/';
   }
-
-  return root + dir;
+  return path.slice(0, end);
 };
 
+function basename(path) {
+  if (typeof path !== 'string') path = path + '';
 
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
+  var start = 0;
+  var end = -1;
+  var matchedSlash = true;
+  var i;
+
+  for (i = path.length - 1; i >= 0; --i) {
+    if (path.charCodeAt(i) === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          start = i + 1;
+          break;
+        }
+      } else if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // path component
+      matchedSlash = false;
+      end = i + 1;
+    }
+  }
+
+  if (end === -1) return '';
+  return path.slice(start, end);
+}
+
+// Uses a mixed approach for backwards-compatibility, as ext behavior changed
+// in new Node.js versions, so only basename() above is backported here
+exports.basename = function (path, ext) {
+  var f = basename(path);
   if (ext && f.substr(-1 * ext.length) === ext) {
     f = f.substr(0, f.length - ext.length);
   }
   return f;
 };
 
+exports.extname = function (path) {
+  if (typeof path !== 'string') path = path + '';
+  var startDot = -1;
+  var startPart = 0;
+  var end = -1;
+  var matchedSlash = true;
+  // Track the state of characters (if any) we see before our first dot and
+  // after any path separator we find
+  var preDotState = 0;
+  for (var i = path.length - 1; i >= 0; --i) {
+    var code = path.charCodeAt(i);
+    if (code === 47 /*/*/) {
+        // If we reached a path separator that was not part of a set of path
+        // separators at the end of the string, stop now
+        if (!matchedSlash) {
+          startPart = i + 1;
+          break;
+        }
+        continue;
+      }
+    if (end === -1) {
+      // We saw the first non-path separator, mark this as the end of our
+      // extension
+      matchedSlash = false;
+      end = i + 1;
+    }
+    if (code === 46 /*.*/) {
+        // If this is our first dot, mark it as the start of our extension
+        if (startDot === -1)
+          startDot = i;
+        else if (preDotState !== 1)
+          preDotState = 1;
+    } else if (startDot !== -1) {
+      // We saw a non-dot and non-path separator before our dot, so we should
+      // have a good chance at having a non-empty extension
+      preDotState = -1;
+    }
+  }
 
-exports.extname = function(path) {
-  return splitPath(path)[3];
+  if (startDot === -1 || end === -1 ||
+      // We saw a non-dot character immediately before the dot
+      preDotState === 0 ||
+      // The (right-most) trimmed path component is exactly '..'
+      preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+    return '';
+  }
+  return path.slice(startDot, end);
 };
 
 function filter (xs, f) {
@@ -5072,16 +5797,16 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(17)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(18)))
 
 /***/ }),
 
-/***/ 19:
+/***/ 20:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Bridge; });
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
 /* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_0__);
 
 
@@ -5197,130 +5922,7 @@ class Bridge extends events__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"] {
 
 /***/ }),
 
-/***/ 2:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return init; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return destroy; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return watch; });
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
-
-
-// Initial state
-var internalSharedData = {
-  openInEditorHost: '/',
-  classifyComponents: true,
-  theme: 'auto',
-  displayDensity: 'low',
-  recordVuex: true,
-  cacheVuexSnapshotsEvery: 50,
-  cacheVuexSnapshotsLimit: 10,
-  snapshotLoading: false,
-  recordPerf: false,
-  editableProps: false,
-  logDetected: true,
-  vuexNewBackend: false,
-  vuexAutoload: false
-}
-
-var persisted = [
-  'classifyComponents',
-  'theme',
-  'displayDensity',
-  'recordVuex',
-  'editableProps',
-  'logDetected',
-  'vuexNewBackend',
-  'vuexAutoload'
-]
-
-// ---- INTERNALS ---- //
-
-var Vue
-var bridge
-// List of fields to persist to storage (disabled if 'false')
-// This should be unique to each shared data client to prevent conflicts
-var persist = false
-// For reactivity, we wrap the data in a Vue instance
-var vm
-
-function init (params) {
-  // Mandatory params
-  bridge = params.bridge
-  Vue = params.Vue
-  persist = !!params.persist
-
-  // Load persisted fields
-  persisted.forEach(key => {
-    var value = _storage__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].get(`shared-data:${key}`)
-    if (value !== null) {
-      internalSharedData[key] = value
-      // Send to other shared data clients
-      if (persist) {
-        sendValue(key, value)
-      }
-    }
-  })
-
-  // Wrapper Vue instance
-  vm = new Vue({
-    data: internalSharedData
-  })
-
-  // Update value from other shared data clients
-  bridge.on('shared-data:set', (ref) => {
-    var key = ref.key;
-    var value = ref.value;
-
-    setValue(key, value)
-  })
-}
-
-function destroy () {
-  bridge.removeAllListeners('shared-data:set')
-  vm.$destroy()
-}
-
-function setValue (key, value) {
-  // Storage
-  if (persist && persisted.includes(key)) {
-    _storage__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].set(`shared-data:${key}`, value)
-  }
-  vm[key] = value
-  // Validate Proxy set trap
-  return true
-}
-
-function sendValue (key, value) {
-  bridge && bridge.send('shared-data:set', {
-    key,
-    value
-  })
-}
-
-function watch (...args) {
-  vm.$watch(...args)
-}
-
-var proxy = {}
-Object.keys(internalSharedData).forEach(key => {
-  Object.defineProperty(proxy, key, {
-    configurable: false,
-    get: () => vm && vm.$data[key],
-    set: (value) => {
-      sendValue(key, value)
-      setValue(key, value)
-    }
-  })
-})
-
-/* harmony default export */ __webpack_exports__["a"] = (proxy);
-
-
-/***/ }),
-
-/***/ 20:
+/***/ 21:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5776,7 +6378,7 @@ function unwrapListeners(arr) {
 
 /***/ }),
 
-/***/ 22:
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -5832,7 +6434,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(52);
+__webpack_require__(54);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -5843,11 +6445,136 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8)))
 
 /***/ }),
 
 /***/ 3:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return init; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return destroy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return watch; });
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+
+
+// Initial state
+var internalSharedData = {
+  openInEditorHost: '/',
+  componentNameStyle: 'class',
+  theme: 'auto',
+  displayDensity: 'low',
+  timeFormat: 'default',
+  recordVuex: true,
+  cacheVuexSnapshotsEvery: 50,
+  cacheVuexSnapshotsLimit: 10,
+  snapshotLoading: false,
+  recordPerf: false,
+  editableProps: false,
+  logDetected: true,
+  vuexNewBackend: false,
+  vuexAutoload: false
+}
+
+var persisted = [
+  'componentNameStyle',
+  'theme',
+  'displayDensity',
+  'recordVuex',
+  'editableProps',
+  'logDetected',
+  'vuexNewBackend',
+  'vuexAutoload',
+  'timeFormat'
+]
+
+// ---- INTERNALS ---- //
+
+var Vue
+var bridge
+// List of fields to persist to storage (disabled if 'false')
+// This should be unique to each shared data client to prevent conflicts
+var persist = false
+// For reactivity, we wrap the data in a Vue instance
+var vm
+
+function init (params) {
+  // Mandatory params
+  bridge = params.bridge
+  Vue = params.Vue
+  persist = !!params.persist
+
+  // Load persisted fields
+  persisted.forEach(key => {
+    var value = _storage__WEBPACK_IMPORTED_MODULE_0__[/* get */ "a"](`shared-data:${key}`)
+    if (value !== null) {
+      internalSharedData[key] = value
+      // Send to other shared data clients
+      if (persist) {
+        sendValue(key, value)
+      }
+    }
+  })
+
+  // Wrapper Vue instance
+  vm = new Vue({
+    data: internalSharedData
+  })
+
+  // Update value from other shared data clients
+  bridge.on('shared-data:set', (ref) => {
+    var key = ref.key;
+    var value = ref.value;
+
+    setValue(key, value)
+  })
+}
+
+function destroy () {
+  bridge.removeAllListeners('shared-data:set')
+  vm.$destroy()
+}
+
+function setValue (key, value) {
+  // Storage
+  if (persist && persisted.includes(key)) {
+    _storage__WEBPACK_IMPORTED_MODULE_0__[/* set */ "c"](`shared-data:${key}`, value)
+  }
+  vm[key] = value
+  // Validate Proxy set trap
+  return true
+}
+
+function sendValue (key, value) {
+  bridge && bridge.send('shared-data:set', {
+    key,
+    value
+  })
+}
+
+function watch (...args) {
+  vm.$watch(...args)
+}
+
+var proxy = {}
+Object.keys(internalSharedData).forEach(key => {
+  Object.defineProperty(proxy, key, {
+    configurable: false,
+    get: () => vm && vm.$data[key],
+    set: (value) => {
+      sendValue(key, value)
+      setValue(key, value)
+    }
+  })
+})
+
+/* harmony default export */ __webpack_exports__["a"] = (proxy);
+
+
+/***/ }),
+
+/***/ 4:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13691,11 +14418,11 @@ if (inBrowser) {
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(7), __webpack_require__(22).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8), __webpack_require__(23).setImmediate))
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13906,11 +14633,11 @@ function browserIsBuffer (b) {
   return !!(b != null && '_isBuffer' in b && b._isBuffer)
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(13).Buffer))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(14).Buffer))
 
 /***/ }),
 
-/***/ 52:
+/***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -14100,11 +14827,11 @@ function browserIsBuffer (b) {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(7), __webpack_require__(17)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8), __webpack_require__(18)))
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports) {
 
 var g;
@@ -14131,650 +14858,94 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 8:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// If the users blocks 3rd party cookies and storage,
-// localStorage will throw.
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  get (key) {
-    try {
-      return JSON.parse(localStorage.getItem(key))
-    } catch (e) {}
-  },
-  set (key, val) {
-    try {
-      localStorage.setItem(key, JSON.stringify(val))
-    } catch (e) {}
-  },
-  remove (key) {
-    try {
-      localStorage.removeItem(key)
-    } catch (e) {}
-  },
-  clear () {
-    try {
-      localStorage.clear()
-    } catch (e) {}
-  }
-});
-
-
-/***/ }),
-
 /***/ 9:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return initVuexBackend; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getCustomStoreDetails; });
-/* harmony import */ var src_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var src_shared_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _clone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return init; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return get; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return set; });
+/* unused harmony export remove */
+/* unused harmony export clear */
+// If we can, we use the browser extension API to store data
+// it's async though, so we synchronize changes from an intermediate
+// storageData object
+var useStorage = typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined'
 
+var storageData = null
 
-
-
-
-
-var isProd = "production" === 'production'
-
-class VuexBackend {
-  constructor (hook, bridge, isLegacy) {
-    bridge.send('vuex:init')
-
-    this.hook = hook
-    this.bridge = bridge
-    this.isLegacy = isLegacy
-    this.store = hook.store
-
-    // Flush info from hook
-    // (for example, modules registered before backend was created)
-    this.earlyModules = hook.flushStoreModules()
-
-    /** Initial store state */
-    this.initialState = this.hook.initialState
-
-    /** Internal store vm for mutation replaying */
-    this.snapshotsVm = null
-
-    /** Initial snapshot */
-    this.baseStateSnapshot = null
-    /** Snapshot cache */
-    this.stateSnapshotCache = null
-    /** Mutation history */
-    this.mutations = null
-    /** Last replayed state */
-    this.lastState = null
-    /** Currently registered dynamic modules */
-    this.registeredModules = {}
-    /** All dynamic modules ever registered, useful for mutation replaying */
-    this.allTimeModules = {}
-    /** Legacy base state */
-    this.legacyBaseSnapshot = null
-
-    // First-time snapshot VM creation
-    this.resetSnapshotsVm()
-    // Initial setup
-    this.reset()
-
-    // Override dynamic module handling in vuex
-    if (this.store.registerModule) {
-      this.origRegisterModule = this.store.registerModule.bind(this.store)
-      this.store.registerModule = (path, module, options) => {
-        this.addModule(path, module, options)
-        this.origRegisterModule(path, module, options)
-        if (!isProd) { console.log('register module', path) }
-      }
-
-      this.origUnregisterModule = this.store.unregisterModule.bind(this.store)
-      this.store.unregisterModule = (path) => {
-        this.removeModule(path)
-        this.origUnregisterModule(path)
-        if (!isProd) { console.log('unregister module', path) }
-      }
+function init () {
+  return new Promise((resolve) => {
+    if (useStorage) {
+      chrome.storage.local.get(null, result => {
+        storageData = result
+        resolve()
+      })
     } else {
-      this.origRegisterModule = this.origUnregisterModule = () => {}
+      storageData = {}
+      resolve()
     }
-
-    // Register modules that were added before backend was created
-    this.earlyModules.forEach((ref) => {
-    var path = ref.path;
-    var module = ref.module;
-    var options = ref.options;
-
-      var moduleInfo = this.addModule(path, module, options)
-      moduleInfo.early = true
-    })
-
-    // deal with multiple backend injections
-    hook.off('vuex:mutation')
-
-    // application -> devtool
-    hook.on('vuex:mutation', this.onMutation.bind(this))
-
-    // devtool -> application
-    bridge.on('vuex:travel-to-state', this.onTravelToState.bind(this))
-    bridge.on('vuex:commit-all', this.onCommitAll.bind(this))
-    bridge.on('vuex:revert-all', this.onRevertAll.bind(this))
-    bridge.on('vuex:commit', this.onCommit.bind(this))
-    bridge.on('vuex:revert', this.onRevert.bind(this))
-    bridge.on('vuex:import-state', this.onImportState.bind(this))
-    bridge.on('vuex:inspect-state', this.onInspectState.bind(this))
-    bridge.on('vuex:edit-state', this.onEditState.bind(this))
-  }
-
-  /**
-   * Register a mutation record
-   */
-  onMutation (ref) {
-    var type = ref.type;
-    var payload = ref.payload;
-
-    if (!src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].recordVuex) { return }
-
-    this.addMutation(type, payload)
-  }
-
-  /**
-   * Time-travel to the state of a specific mutation (by index)
-   */
-  onTravelToState (ref) {
-    var index = ref.index;
-    var apply = ref.apply;
-
-    var snapshot = this.replayMutations(index)
-    var state = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.lastState)
-    this.bridge.send('vuex:inspected-state', {
-      index,
-      snapshot
-    })
-    if (apply) {
-      this.ensureRegisteredModules(this.mutations[index])
-      this.hook.emit('vuex:travel-to-state', state)
-    }
-  }
-
-  onCommitAll () {
-    this.reset(this.lastState)
-  }
-
-  onRevertAll () {
-    this.reset()
-  }
-
-  /**
-   * Reset the base state to a specific mutation (by index)
-   *
-   * ⚠️ State should be time-traveled to before executing this
-   */
-  onCommit (index) {
-    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
-      this.baseStateSnapshot = this.lastState
-    } else {
-      this.legacyBaseSnapshot = this.mutations[index].snapshot
-    }
-    this.resetSnapshotCache()
-    this.mutations = this.mutations.slice(index + 1)
-    this.mutations.forEach((mutation, index) => {
-      mutation.index = index
-    })
-  }
-
-  /**
-   * Removes mutations after a specific mutation (by index)
-   *
-   * ⚠️ State should be time-traveled to before executing this
-   */
-  onRevert (index) {
-    this.resetSnapshotCache()
-    this.ensureRegisteredModules(this.mutations[index - 1])
-    this.mutations = this.mutations.slice(0, index)
-  }
-
-  /**
-   * Parse and time-travel to a state
-   */
-  onImportState (state) {
-    var parsed = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* parse */ "r"])(state, true)
-    this.initialState = parsed
-    this.hook.emit('vuex:travel-to-state', parsed)
-    this.reset()
-    this.bridge.send('vuex:init')
-    this.onInspectState(-1)
-  }
-
-  /**
-   * If the index is -1, sends the base state.
-   * Else replays the mutations up to the <index> mutation.
-   */
-  onInspectState (index) {
-    var snapshot = this.replayMutations(index)
-    this.bridge.send('vuex:inspected-state', {
-      index,
-      snapshot
-    })
-  }
-
-  onEditState (ref) {
-    var index = ref.index;
-    var value = ref.value;
-    var path = ref.path;
-
-    var parsedValue
-    if (value) {
-      parsedValue = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* parse */ "r"])(value, true)
-    }
-    this.store._committing = true
-    Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* set */ "u"])(this.store.state, path, parsedValue)
-    this.store._committing = false
-    this.bridge.send('vuex:inspected-state', {
-      index,
-      snapshot: this.getStoreSnapshot()
-    })
-    this.cacheStateSnapshot(index, true)
-  }
-
-  /**
-   * Should be called when store structure changes,
-   * for example when a dynamic module is registered
-   */
-  resetSnapshotsVm (state) {
-    this.snapshotsVm = new vue__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
-      data: {
-        $$state: state || {}
-      },
-      computed: this.store._vm.$options.computed
-    })
-  }
-
-  /**
-   * Reset vuex backend
-   */
-  reset (stateSnapshot = null) {
-    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
-      this.baseStateSnapshot = stateSnapshot || Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.initialState)
-    } else {
-      this.legacyBaseSnapshot = this.stringifyStore()
-    }
-    this.mutations = []
-    this.resetSnapshotCache()
-  }
-
-  resetSnapshotCache () {
-    this.stateSnapshotCache = [
-      {
-        index: -1,
-        state: this.baseStateSnapshot,
-        permanent: true
-      }
-    ]
-  }
-
-  /**
-   * Handle adding a dynamic store module
-   */
-  addModule (path, module, options) {
-    if (typeof path === 'string') { path = [path] }
-
-    var state
-    if (options && options.preserveState) {
-      state = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* get */ "k"])(this.store.state, path)
-    }
-    if (!state) {
-      state = typeof module.state === 'function' ? module.state() : module.state
-    }
-    if (!state) {
-      state = {}
-    }
-
-    var fakeModule = Object.assign({}, module)
-
-    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
-      // Ensure all children state are cloned
-      var replaceNestedStates = (nestedModule) => {
-        if (nestedModule.modules) {
-          Object.keys(nestedModule.modules).forEach(key => {
-            var child = nestedModule.modules[key]
-            var state = {}
-            if (child.state) {
-              state = typeof child.state === 'function' ? child.state() : child.state
-            }
-            child.state = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state)
-            replaceNestedStates(child)
-          })
-        }
-      }
-      replaceNestedStates(fakeModule)
-    }
-
-    var key = path.join('/')
-    var moduleInfo = this.registeredModules[key] = this.allTimeModules[key] = {
-      path,
-      module: fakeModule,
-      options: Object.assign({}, options,
-        {preserveState: false}),
-      state: src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend ? Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state) : null
-    }
-
-    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].recordVuex) {
-      this.addMutation(`Register module: ${key}`, {
-        path,
-        module,
-        options
-      }, {
-        registerModule: true
-      })
-    }
-
-    return moduleInfo
-  }
-
-  /**
-   * Handle removing a dynamic store module
-   */
-  removeModule (path) {
-    if (typeof path === 'string') { path = [path] }
-
-    delete this.registeredModules[path.join('/')]
-
-    if (src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].recordVuex) {
-      this.addMutation(`Unregister module: ${path.join('/')}`, {
-        path
-      }, {
-        unregisterModule: true
-      })
-    }
-  }
-
-  /**
-   * Make sure all (and only) the dynamic modules present at the moment of a mutation
-   * are correctly registered in the store
-   */
-  ensureRegisteredModules (mutation) {
-    if (mutation) {
-      mutation.registeredModules.forEach(m => {
-        if (!Object.keys(this.registeredModules).sort((a, b) => a.length - b.length).includes(m)) {
-          var data = this.allTimeModules[m]
-          if (data) {
-            var { path, module, options, state } = data
-            this.origRegisterModule(path, Object.assign({}, module,
-              {state: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state)}), options)
-            this.registeredModules[path.join('/')] = data
-          }
-        }
-      })
-      Object.keys(this.registeredModules).sort((a, b) => b.length - a.length).forEach(m => {
-        if (!mutation.registeredModules.includes(m)) {
-          this.origUnregisterModule(m.split('/'))
-          delete this.registeredModules[m]
-        }
-      })
-      this.resetSnapshotsVm(this.store.state)
-    }
-  }
-
-  /**
-   * Check if the store as a specific dynamic module
-   */
-  hasModule (path) {
-    return !!this.store._modules.get(path)
-  }
-
-  stringifyStore () {
-    return Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "x"])({
-      state: this.store.state,
-      getters: this.store.getters || {}
-    })
-  }
-
-  /**
-   * Handle a new mutation commited to the store
-   */
-  addMutation (type, payload, options = {}) {
-    var index = this.mutations.length
-
-    if (!src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
-      options.snapshot = this.stringifyStore()
-    }
-
-    this.mutations.push(Object.assign({}, {type,
-      payload: src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend ? Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(payload) : null,
-      index,
-      handlers: this.store._mutations[type],
-      registeredModules: Object.keys(this.registeredModules)},
-      options))
-
-    this.bridge.send('vuex:mutation', {
-      mutation: {
-        type: type,
-        payload: Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "x"])(payload),
-        index
-      },
-      timestamp: Date.now(),
-      options
-    })
-  }
-
-  /**
-   * Replays mutations from the base state up to a specific index
-   * to re-create what the vuex state should be at this point
-   */
-  replayMutations (index) {
-    if (!src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].vuexNewBackend) {
-      var snapshot = index === -1 ? this.legacyBaseSnapshot : this.mutations[index].snapshot
-      this.lastState = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* parse */ "r"])(snapshot, true).state
-      return snapshot
-    }
-
-    var originalVm = this.store._vm
-    var originalState = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.store.state)
-    this.store._vm = this.snapshotsVm
-
-    var tempRemovedModules = []
-    var tempAddedModules = []
-
-    // If base state, we need to remove all dynamic registered modules
-    // to prevent errors because their state is missing
-    if (index === -1) {
-      tempRemovedModules = Object.keys(this.registeredModules)
-      tempRemovedModules.filter(m => this.hasModule(m.split('/'))).sort((a, b) => b.length - a.length).forEach(m => {
-        this.origUnregisterModule(m.split('/'))
-        if (!isProd) { console.log('before replay unregister', m) }
-      })
-    }
-
-    // Get most recent snapshot for target index
-    // for faster replay
-    var stateSnapshot
-    for (var i = 0; i < this.stateSnapshotCache.length; i++) {
-      var s = this.stateSnapshotCache[i]
-      if (s.index > index) {
-        break
-      } else {
-        stateSnapshot = s
-      }
-    }
-
-    var resultState
-
-    // Snapshot was already replayed
-    if (stateSnapshot.index === index) {
-      resultState = stateSnapshot.state
-
-      var state = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(stateSnapshot.state)
-      this.resetSnapshotsVm(state)
-      this.store.replaceState(state)
-    } else {
-      // Update state when using fake vm to properly temporarily remove modules
-      this.resetSnapshotsVm(originalState)
-      this.store.replaceState(originalState)
-      // Temporarily remove modules if they where not present during first mutation being replayed
-      var startMutation = this.mutations[stateSnapshot.index]
-      if (startMutation) {
-        tempRemovedModules = Object.keys(this.registeredModules).filter(m => !startMutation.registeredModules.includes(m))
-      } else {
-        tempRemovedModules = Object.keys(this.registeredModules)
-      }
-      tempRemovedModules.filter(m => this.hasModule(m.split('/'))).sort((a, b) => b.length - a.length).forEach(m => {
-        this.origUnregisterModule(m.split('/'))
-        if (!isProd) { console.log('before replay unregister', m) }
-      })
-
-      var state$1 = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(stateSnapshot.state)
-      this.resetSnapshotsVm(state$1)
-      this.store.replaceState(state$1)
-
-      src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].snapshotLoading = true
-
-      // Replay mutations
-      for (var i$1 = stateSnapshot.index + 1; i$1 <= index; i$1++) {
-        var mutation = this.mutations[i$1]
-        if (mutation.registerModule) {
-          var key = mutation.payload.path.join('/')
-          var moduleInfo = this.allTimeModules[key]
-          tempAddedModules.push(key)
-          this.origRegisterModule(moduleInfo.path, Object.assign({}, moduleInfo.module,
-            {state: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(moduleInfo.state)}), moduleInfo.options)
-          this.resetSnapshotsVm(this.store.state)
-          if (!isProd) { console.log('replay register module', moduleInfo) }
-        } else if (mutation.unregisterModule && this.hasModule(mutation.payload.path)) {
-          var path = mutation.payload.path
-          var index$1 = tempAddedModules.indexOf(path.join('/'))
-          if (index$1 !== -1) { tempAddedModules.splice(index$1, 1) }
-          this.origUnregisterModule(path)
-          this.resetSnapshotsVm(this.store.state)
-          if (!isProd) { console.log('replay unregister module', path) }
-        } else if (mutation.handlers) {
-          this.store._committing = true
-          try {
-            var payload = mutation.payload
-
-            if (this.isLegacy && !Array.isArray(payload)) {
-              payload = [payload]
-            }
-
-            if (Array.isArray(mutation.handlers)) {
-              if (this.isLegacy) {
-                mutation.handlers.forEach(handler => handler(this.store.state, ...payload))
-              } else {
-                mutation.handlers.forEach(handler => handler(payload))
-              }
-            } else {
-              if (this.isLegacy) {
-                mutation.handlers(this.store.state, ...payload)
-              } else {
-                mutation.handlers(payload)
-              }
-            }
-          } catch (e) {
-            throw e
-          }
-          this.store._committing = false
-        }
-
-        // Optimization: periodically cache snapshots
-        if (i$1 === index || (i$1 % src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].cacheVuexSnapshotsEvery === 0)) {
-          this.cacheStateSnapshot(i$1)
-        }
-      }
-
-      // Send final state after replay
-      resultState = Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.store.state)
-
-      if (!isProd) { console.log(`replayed ${index - stateSnapshot.index} mutation(s)`) }
-    }
-
-    this.lastState = resultState
-
-    var result = this.stringifyStore()
-
-    // Restore user state
-    tempAddedModules.sort((a, b) => b.length - a.length).forEach(m => {
-      this.origUnregisterModule(m.split('/'))
-      if (!isProd) { console.log('after replay unregister', m) }
-    })
-    tempRemovedModules.sort((a, b) => a.length - b.length).forEach(m => {
-      var { path, module, options, state } = this.registeredModules[m]
-      this.origRegisterModule(path, Object.assign({}, module,
-        {state: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(state)}), options)
-      if (!isProd) { console.log('after replay register', m) }
-    })
-    this.store._vm = originalVm
-
-    return result
-  }
-
-  cacheStateSnapshot (index, permanent = false) {
-    this.removeCachedStateSnapshot(index)
-    this.stateSnapshotCache.push({
-      index,
-      state: Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(this.store.state),
-      permanent
-    })
-    if (!isProd) { console.log('cached snapshot', index) }
-    // Delete old cached snapshots
-    if (this.stateSnapshotCache.filter(s => !s.permanent).length > src_shared_data__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"].cacheVuexSnapshotsLimit) {
-      var i = this.stateSnapshotCache.findIndex(s => !s.permanent)
-      if (i !== -1) {
-        if (!isProd) { console.log('clean cached snapshot', this.stateSnapshotCache[i].index) }
-        this.stateSnapshotCache.splice(i, 1)
-      }
-    }
-  }
-
-  removeCachedStateSnapshot (index) {
-    var i = this.stateSnapshotCache.findIndex(s => s.idex === index)
-    if (i !== -1) { this.stateSnapshotCache.splice(i, 1) }
-  }
-
-  /**
-   * Get the serialized state and getters from the store
-   */
-  getStoreSnapshot (stateSnapshot = null) {
-    var originalVm
-    if (stateSnapshot) {
-      originalVm = this.store._vm
-      this.store._vm = this.snapshotsVm
-      this.store.replaceState(Object(_clone__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(stateSnapshot))
-    }
-
-    var result = Object(src_util__WEBPACK_IMPORTED_MODULE_0__[/* stringify */ "x"])({
-      state: this.store.state,
-      getters: this.store.getters || {}
-    })
-
-    if (stateSnapshot) {
-      // Restore user state
-      this.store._vm = originalVm
-    }
-
-    return result
+  })
+}
+
+function get (key, defaultValue = null) {
+  checkStorage()
+  if (useStorage) {
+    return getDefaultValue(storageData[key], defaultValue)
+  } else {
+    try {
+      return getDefaultValue(JSON.parse(localStorage.getItem(key)), defaultValue)
+    } catch (e) {}
   }
 }
 
-function initVuexBackend (hook, bridge, isLegacy) {
-  // eslint-disable-next-line no-new
-  new VuexBackend(hook, bridge, isLegacy)
+function set (key, val) {
+  checkStorage()
+  if (useStorage) {
+    storageData[key] = val
+    chrome.storage.local.set({ [key]: val })
+  } else {
+    try {
+      localStorage.setItem(key, JSON.stringify(val))
+    } catch (e) {}
+  }
 }
 
-function getCustomStoreDetails (store) {
-  return {
-    _custom: {
-      type: 'store',
-      display: 'Store',
-      value: {
-        state: store.state,
-        getters: store.getters
-      },
-      fields: {
-        abstract: true
-      }
-    }
+function remove (key) {
+  checkStorage()
+  if (useStorage) {
+    delete storageData[key]
+    chrome.storage.local.remove([key])
+  } else {
+    try {
+      localStorage.removeItem(key)
+    } catch (e) {}
   }
+}
+
+function clear () {
+  checkStorage()
+  if (useStorage) {
+    storageData = {}
+    chrome.storage.local.clear()
+  } else {
+    try {
+      localStorage.clear()
+    } catch (e) {}
+  }
+}
+
+function checkStorage () {
+  if (!storageData) {
+    throw new Error(`Storage wasn't initialized with 'init()'`)
+  }
+}
+
+function getDefaultValue (value, defaultValue) {
+  if (value == null) {
+    return defaultValue
+  }
+  return value
 }
 
 
