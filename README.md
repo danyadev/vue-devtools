@@ -9,7 +9,7 @@
 ## Установка
 
 ```bash
-npm i @danyadev/vue-devtools
+npm i https://github.com/danyadev/vue-devtools
 ```
 
 ## Использование
@@ -18,7 +18,7 @@ npm i @danyadev/vue-devtools
 // Main process
 
 const { app, BrowserWindow } = require('electron');
-const VueDevTools = require('@danyadev/vue-devtools');
+const VueDevTools = require('vue-devtools');
 
 app.on('ready', () => {
   BrowserWindow.addDevToolsExtension(VueDevTools);
